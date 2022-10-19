@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,13 +22,30 @@ namespace QuestSystem.Editor
 
         private void OnEnable()
         {
+            ConstructGraphView();
+            GenerateToolbar();
+        }
+
+        private void ConstructGraphView()
+        {
             _questGraphView = new QuestGraphView()
             {
                 name = "Quest Graph"
             };
-            
+
             _questGraphView.StretchToParentSize();
             rootVisualElement.Add(_questGraphView);
+        }
+
+        private void GenerateToolbar()
+        {
+            var toolbar = new Toolbar();
+
+            var nodeCreateButton = new Button(() => { _questGraphView.GenerateNode("Quest node"); });
+            nodeCreateButton.text = "Create node";
+            toolbar.Add(nodeCreateButton);
+
+            rootVisualElement.Add(toolbar);
         }
 
         private void OnDisable()
